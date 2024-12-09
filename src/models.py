@@ -14,21 +14,14 @@ class User(Base):
     user_name = Column(String(250), unique = True, nullable = False)
     email = Column(String(250), unique = True, nullable = False)
     password = Column(String(250), nullable = False)
-
-
-class Favorite_Character(Base):
-    __tablename__ = 'favoritecharacter'
-    id = Column(Integer, primary_key=True, autoincrement = True)
-    name = Column(String(250), nullable = False)
-    characteristics = Column(Text)
-    id_user = Column(Integer, ForeignKey("user.id"), nullable = False)
-
+    favorite_characters = relationship("character", secondary="favorite_character")
+    favorite_planets = relationship("planet", secondary="favorite_planet")
 
 favorite_character = Table(
     "favorite_character",
     Base.metadata,
     Column("user_id", Integer, ForeignKey("user.id"), primary_key = True, nullable = False),
-    Column("character_id", Integer, ForeignKey("planet.id"), primary_key = True, nullable = False)
+    Column("character_id", Integer, ForeignKey("character.id"), primary_key = True, nullable = False)
 )
 
 favorite_planet = Table(
